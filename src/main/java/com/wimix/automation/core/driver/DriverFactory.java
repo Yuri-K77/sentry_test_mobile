@@ -41,7 +41,7 @@ public class DriverFactory {
                 .setPlatformName("Android")
                 .setPlatformVersion(OS_VERSION)
                 .setAppPackage(APP_PACKAGE)
-                .setAppActivity("com.sentryd.trade.presentation.ui.start.StartActivity") //TODO
+                .setAppActivity("com.sentryd.trade.ui.activity.SplashActivity")
                 .eventTimings();
         try {
             AndroidDriver driver = new AndroidDriver(new URL("http://" + APPIUM_SERVER_URL + ":" + APPIUM_SERVER_PORT), options);
