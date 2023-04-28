@@ -18,7 +18,7 @@ public class SentryConfig {
     public SentryConfig() {
         String env = System.getProperty("sentry.env");
         if (env == null) {
-            env = "dev";
+            env = "prod";
         }
         configuration = new ConfigurationBuilder()
                 .withEnvironmentProperties()
