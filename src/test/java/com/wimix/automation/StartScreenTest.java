@@ -23,6 +23,10 @@ public class StartScreenTest extends BaseTest {
                 .openLoginScreen()
                 .inputDataInEmailField(getEmail())
                 .inputDataInPasswordField(getPassword())
+                .clickShowHidePasswordButton()
+                .clickShowHidePasswordButton()
+                .clickRememberUserNameSwitch()
+                .clickRememberUserNameSwitch()
                 .clickLoginButton();
         //Assertions.assertTrue(new MyTasksScreen(driver).waitIsScreenOpen());
     }

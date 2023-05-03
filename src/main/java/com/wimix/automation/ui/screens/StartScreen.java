@@ -1,6 +1,8 @@
 package com.wimix.automation.ui.screens;
 
+import com.wimix.automation.ui.actions.MobileScreenActionManager;
 import io.appium.java_client.android.AndroidDriver;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -59,11 +61,17 @@ public class StartScreen extends AbstractScreen {
         @FindBy(xpath = "//*[@text='WELCOME!']")
         public WebElement welcomeTextView;
 
-        @FindBy(xpath = "//*[@text='Username or Email']")
+        @FindBy(xpath = "//androidx.compose.ui.platform.ComposeView/android.view.View/android.widget.EditText[1]")
         public WebElement emailField;
 
-        @FindBy(xpath = "//*[@text='Password']")
+        @FindBy(xpath = "//androidx.compose.ui.platform.ComposeView/android.view.View/android.widget.EditText[2]")
         public WebElement passwordField;
+
+        @FindBy(xpath = "//android.widget.ImageView[@content-desc='Show/Hide password']")
+        public WebElement showHidePassword;
+
+        @FindBy(xpath = "//androidx.compose.ui.platform.ComposeView/android.view.View/android.view.ViewGroup[2]/android.widget.Switch")
+        public WebElement rememberUserNameSwitch;
 
         @FindBy(xpath = "//*[@text='LOG IN']")
         public WebElement loginButton;
@@ -106,9 +114,19 @@ public class StartScreen extends AbstractScreen {
             return this;
         }
 
-        public LoginScreen clickLoginButton() {
-            mobileScreenActionManager.clickOnElementWithPollingInterval(loginButton);
+        public LoginScreen clickShowHidePasswordButton() {
+            mobileScreenActionManager.clickOnElement(showHidePassword);
             return this;
+        }
+
+        public LoginScreen clickRememberUserNameSwitch() {
+            mobileScreenActionManager.clickOnElement(rememberUserNameSwitch);
+            return this;
+        }
+
+        public ChooseAccount clickLoginButton() {
+            mobileScreenActionManager.clickOnElement(loginButton);
+            return new ChooseAccount(driver, mobileScreenActionManager);
         }
 
         public LoginScreen clickForgotPassword() {
@@ -119,6 +137,17 @@ public class StartScreen extends AbstractScreen {
         public LoginScreen clickSignUp() {
             mobileScreenActionManager.clickOnElement(signUpTextView);
             return this;
+        }
+    }
+
+    public static class ChooseAccount extends AbstractElement {
+        public ChooseAccount(AndroidDriver driver, MobileScreenActionManager mobileScreenActionManager) {
+            super(driver.findElement(By.xpath("//*[@resource-id = 'android:id/content']")), mobileScreenActionManager);
+        }
+
+        public LoginScreen clickCloseChooseAccountScreen() {
+            mobileScreenActionManager.clickOnElement(findElement(By.xpath("//android.widget.ImageView[@content-desc='Go back']")));
+            return new LoginScreen(mobileScreenActionManager.driver);
         }
     }
 
