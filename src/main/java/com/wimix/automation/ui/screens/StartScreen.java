@@ -2,10 +2,18 @@ package com.wimix.automation.ui.screens;
 
 import com.wimix.automation.ui.actions.MobileScreenActionManager;
 import io.appium.java_client.android.AndroidDriver;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import org.awaitility.Awaitility;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
+
+import static org.openqa.selenium.By.xpath;
 
 @SuppressWarnings("UnusedReturnValue")
 public class StartScreen extends AbstractScreen {
@@ -124,14 +132,14 @@ public class StartScreen extends AbstractScreen {
             return this;
         }
 
-        public ChooseAccount clickLoginButton() {
+        public ChooseAccountPopUp clickLoginButton() {
             mobileScreenActionManager.clickOnElement(loginButton);
-            return new ChooseAccount(driver, mobileScreenActionManager);
+            return new ChooseAccountPopUp(driver, mobileScreenActionManager);
         }
 
-        public LoginScreen clickForgotPassword() {
+        public ForgotPasswordScreen openForgotPasswordScreen() {
             mobileScreenActionManager.clickOnElement(forgotPasswordTextView);
-            return this;
+            return new ForgotPasswordScreen(driver);
         }
 
         public LoginScreen clickSignUp() {
@@ -140,14 +148,134 @@ public class StartScreen extends AbstractScreen {
         }
     }
 
-    public static class ChooseAccount extends AbstractElement {
-        public ChooseAccount(AndroidDriver driver, MobileScreenActionManager mobileScreenActionManager) {
-            super(driver.findElement(By.xpath("//*[@resource-id = 'android:id/content']")), mobileScreenActionManager);
+    public static class ChooseAccountPopUp extends AbstractElement {
+
+        public ChooseAccountPopUp(AndroidDriver driver, MobileScreenActionManager mobileScreenActionManager) {
+            super(driver.findElement(By.xpath("//*[@resource-id='android:id/content']")), mobileScreenActionManager);
+        }
+
+        public boolean isChooseAccountPopUpOpen() {
+            return mobileScreenActionManager.isElementDisplayed(getContainer());
         }
 
         public LoginScreen clickCloseChooseAccountScreen() {
-            mobileScreenActionManager.clickOnElement(findElement(By.xpath("//android.widget.ImageView[@content-desc='Go back']")));
+            mobileScreenActionManager.clickOnElement(findElement(xpath("//android.widget.ImageView[@content-desc='Go back']")));
             return new LoginScreen(mobileScreenActionManager.driver);
+        }
+
+        //TODO
+        private WebElement getAccountItem(AccountItem accountItem) {
+            AtomicReference<WebElement> element = new AtomicReference<>();
+            Awaitility
+                    .given()
+                    .pollInterval(100, TimeUnit.MILLISECONDS)
+                    .atMost(5000, TimeUnit.MILLISECONDS)
+                    .pollInSameThread()
+                    .ignoreExceptions()
+                    .until(() -> {
+                        ChooseAccountPopUp chooseAccountPopUp = new ChooseAccountPopUp(mobileScreenActionManager.driver, mobileScreenActionManager);
+                        element.set(chooseAccountPopUp.getContainer());
+                        switch (accountItem) {
+                            case REAL -> {
+                                chooseAccountPopUp.findElement(xpath("//*[text()='REAL']"));
+                            }
+                            case DEMO -> {
+                                chooseAccountPopUp.findElement(xpath("//*[text()='DEMO']"));
+                            }
+                            default -> throw new IllegalArgumentException("This item doesn't exist");
+                        }
+                        return true;
+                    });
+            return element.get();
+        }
+
+        public MarketWatchScreen selectAccountItem(AccountItem accountItem) {
+            getAccountItem(accountItem).click();
+            return new MarketWatchScreen(mobileScreenActionManager.driver);
+        }
+
+        @AllArgsConstructor
+        @Getter
+        public enum AccountItem {
+            REAL("REAL"),
+            DEMO("DEMO");
+
+            private final String value;
+        }
+    }
+
+    public static class ForgotPasswordScreen extends AbstractScreen {
+
+        @FindBy(xpath = "//*[@text='Forgot your password?']")
+        public WebElement forgotYourPasswordTextView;
+
+        @FindBy(xpath = "//android.widget.ImageView[@content-desc='Go back']")
+        public WebElement closeButton;
+
+        @FindBy(xpath = "//*[@text='Submit']")
+        public WebElement submitButton;
+
+        @FindBy(xpath = "//*[@text='Return to Login']")
+        public WebElement returnToLoginButton;
+
+        @FindBy(xpath = "//android.widget.ImageView[@content-desc='Go back']")
+        public WebElement cancelButton;
+
+        @FindBy(xpath = "//androidx.compose.ui.platform.ComposeView/android.view.View/android.view.ViewGroup[2]/android.widget.FrameLayout/android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View[2]/android.view.View[2]/android.view.View/android.view.View[1]/android.view.View/android.view.View/android.view.View/android.widget.EditText")
+        public WebElement emailField;
+
+        public ForgotPasswordScreen(AndroidDriver driver) {
+            super(driver);
+            PageFactory.initElements(driver, this);
+        }
+
+        @Override
+        public ForgotPasswordScreen openScreen() {
+            new StartScreen(driver)
+                    .openScreen()
+                    .openLoginScreen()
+                    .openForgotPasswordScreen();
+            return waitScreenOpen();
+        }
+
+        @Override
+        public boolean isScreenOpen() {
+            return mobileScreenActionManager.isElementDisplayed(forgotYourPasswordTextView);
+        }
+
+        @Override
+        public ForgotPasswordScreen waitScreenOpen() {
+            mobileScreenActionManager.waitGetVisibleElement(forgotYourPasswordTextView);
+            return this;
+        }
+
+        public LoginScreen clickCloseButton() {
+            mobileScreenActionManager.clickOnElement(closeButton);
+            return new LoginScreen(driver);
+        }
+
+        public ForgotPasswordScreen clickSubmitButton() {
+            mobileScreenActionManager.clickOnElement(submitButton);
+            return this;
+        }
+
+        public LoginScreen clickReturnToLoginButton() {
+            mobileScreenActionManager.clickOnElement(returnToLoginButton);
+            return new LoginScreen(driver);
+        }
+
+        public LoginScreen clickCancelButton() {
+            mobileScreenActionManager.clickOnElement(cancelButton);
+            return new LoginScreen(driver);
+        }
+
+        public ForgotPasswordScreen inputDataInEmailField(String text) {
+            mobileScreenActionManager.inputDataInField(emailField, text);
+            return this;
+        }
+
+        public String getTextFromConfirmationMessage() {
+            return driver.findElement(By.xpath("//androidx.compose.ui.platform.ComposeView/android.view.View/android.view.ViewGroup[2]/android.widget.FrameLayout/android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View[4]/android.view.View[1]/android.widget.TextView")).getText();
         }
     }
 
