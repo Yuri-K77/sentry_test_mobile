@@ -275,7 +275,6 @@ public class StartScreen extends AbstractScreen {
             return this;
         }
 
-        //TODO
         public String getTextFromConfirmationMessage() {
             return driver.findElement(By.xpath("//*[@text='Thank you. We have sent you an email with instructions for resetting your password.']")).getText();
         }

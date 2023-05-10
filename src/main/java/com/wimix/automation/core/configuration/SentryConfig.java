@@ -84,14 +84,21 @@ public class SentryConfig {
         return getInstance().configuration.getString("sentry.clientSecretWeb");
     }
 
-    public static String getEmail() {
-        return getInstance().configuration.getString("sentryUser.email");
+    public static String getTestEmail() {
+        return getInstance().configuration.getString("sentryUser.testEmail");
     }
 
     public static String getPassword() {
-        return getInstance().configuration.getString("sentryUser.password");
+        return getInstance().configuration.getString("sentryUser.testPassword");
     }
 
+    public static String getRealEmail() {
+        return getInstance().configuration.getString("sentryUser.realEmail");
+    }
+
+    public static String getRealPassword() {
+        return getInstance().configuration.getString("sentryUser.realPassword");
+    }
 
     public static String getBsUserName() {
         return getInstance().configuration.getString("bs.userName");

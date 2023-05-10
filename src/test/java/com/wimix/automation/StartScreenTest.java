@@ -6,8 +6,7 @@ import com.wimix.automation.ui.screens.StartScreen.*;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.*;
 
-import static com.wimix.automation.core.configuration.SentryConfig.getEmail;
-import static com.wimix.automation.core.configuration.SentryConfig.getPassword;
+import static com.wimix.automation.core.configuration.SentryConfig.*;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class StartScreenTest extends BaseTest {
@@ -55,7 +54,7 @@ public class StartScreenTest extends BaseTest {
         ForgotPasswordScreen forgotPasswordScreen = startScreen.waitScreenOpen()
                 .openLoginScreen()
                 .openForgotPasswordScreen()
-                .inputDataInEmailField(getEmail())
+                .inputDataInEmailField(getRealEmail())
                 .clickSubmitButton();
         Assertions.assertEquals(expectedResult, forgotPasswordScreen.getTextFromConfirmationMessage());
     }
