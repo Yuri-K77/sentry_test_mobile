@@ -63,7 +63,6 @@ public class StartScreen extends AbstractScreen {
         return new RealAccountScreen(driver);
     }
 
-    //TODO
     public static class LoginScreen extends AbstractScreen {
 
         @FindBy(xpath = "//*[@text='WELCOME!']")
@@ -87,7 +86,7 @@ public class StartScreen extends AbstractScreen {
         @FindBy(xpath = "//*[@text='FORGOT PASSWORD?']")
         public WebElement forgotPasswordTextView;
 
-        @FindBy(xpath = "//*[@text='SIGN UP?']")
+        @FindBy(xpath = "//*[@text='SIGN UP']")
         public WebElement signUpTextView;
 
         public LoginScreen(AndroidDriver driver) {
@@ -97,7 +96,9 @@ public class StartScreen extends AbstractScreen {
 
         @Override
         public LoginScreen openScreen() {
-            new StartScreen(driver).openScreen().openLoginScreen();
+            new StartScreen(driver)
+                    .openScreen()
+                    .openLoginScreen();
             return waitScreenOpen();
         }
 
@@ -142,9 +143,9 @@ public class StartScreen extends AbstractScreen {
             return new ForgotPasswordScreen(driver);
         }
 
-        public LoginScreen clickSignUp() {
+        public RealAccountScreen clickSignUpTextView() {
             mobileScreenActionManager.clickOnElement(signUpTextView);
-            return this;
+            return new RealAccountScreen(driver);
         }
     }
 
@@ -274,12 +275,12 @@ public class StartScreen extends AbstractScreen {
             return this;
         }
 
+        //TODO
         public String getTextFromConfirmationMessage() {
-            return driver.findElement(By.xpath("//androidx.compose.ui.platform.ComposeView/android.view.View/android.view.ViewGroup[2]/android.widget.FrameLayout/android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View[4]/android.view.View[1]/android.widget.TextView")).getText();
+            return driver.findElement(By.xpath("//*[@text='Thank you. We have sent you an email with instructions for resetting your password.']")).getText();
         }
     }
 
-    //TODO
     public static class DemoAccountScreen extends AbstractScreen {
 
         @Override
@@ -303,27 +304,38 @@ public class StartScreen extends AbstractScreen {
         }
     }
 
-    //TODO
     public static class RealAccountScreen extends AbstractScreen {
 
+        @FindBy(xpath = "//*[@text='Real Account']")
+        public WebElement realAccountTextView;
+
         @Override
-        public AbstractScreen openScreen() {
-            return null;
+        public RealAccountScreen openScreen() {
+            new StartScreen(driver)
+                    .openScreen()
+                    .openLoginScreen()
+                    .clickSignUpTextView();
+            return waitScreenOpen();
         }
 
         @Override
         public boolean isScreenOpen() {
-            return false;
+            return mobileScreenActionManager.isElementDisplayed(realAccountTextView);
         }
 
         @Override
-        public AbstractScreen waitScreenOpen() {
-            return null;
+        public RealAccountScreen waitScreenOpen() {
+            mobileScreenActionManager.waitGetVisibleElement(realAccountTextView);
+            return this;
         }
 
         public RealAccountScreen(AndroidDriver driver) {
             super(driver);
             PageFactory.initElements(driver, this);
+        }
+
+        public String getTextFromRealAccount() {
+            return driver.findElement(By.xpath("//*[@text='Real Account']")).getText();
         }
     }
 }

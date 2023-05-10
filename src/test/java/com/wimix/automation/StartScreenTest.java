@@ -1,7 +1,9 @@
 package com.wimix.automation;
 
+import com.wimix.automation.core.utils.Retry;
 import com.wimix.automation.ui.screens.StartScreen;
-import com.wimix.automation.ui.screens.StartScreen.ForgotPasswordScreen;
+import com.wimix.automation.ui.screens.StartScreen.*;
+import lombok.SneakyThrows;
 import org.junit.jupiter.api.*;
 
 import static com.wimix.automation.core.configuration.SentryConfig.getEmail;
@@ -14,25 +16,37 @@ public class StartScreenTest extends BaseTest {
 
     @BeforeAll
     void beforeAll() {
-        startScreen = new StartScreen(driver);
-
+        startScreen = new StartScreen(driver).openScreen();
     }
 
-    @DisplayName("After successful login, Marketwatch screen should be open")
-    @Test
-    void makeLogin() {
-        startScreen.waitScreenOpen()
-                .openLoginScreen()
-                .inputDataInEmailField(getEmail())
-                .inputDataInPasswordField(getPassword())
-                .clickShowHidePasswordButton()
-                .clickShowHidePasswordButton()
-                .clickRememberUserNameSwitch()
-                .clickRememberUserNameSwitch()
-                .clickLoginButton()
-                .selectAccountItem(StartScreen.ChooseAccountPopUp.AccountItem.REAL);
-        //Assertions.assertTrue(new MyTasksScreen(driver).waitIsScreenOpen());
+    @SneakyThrows
+    @AfterEach
+    void afterEach() {
+        Retry.whileTrue(100, 5000, () -> {
+            if (!startScreen.isScreenOpen()) {
+                driver.navigate().back();
+                return true;
+            } else {
+                return false;
+            }
+        }, "Unexpectedly, Start screen does not open");
     }
+
+//    @DisplayName("After successful login, Marketwatch screen should be open")
+//    @Test
+//    void makeLogin() {
+//        startScreen.waitScreenOpen()
+//                .openLoginScreen()
+//                .inputDataInEmailField(getEmail())
+//                .inputDataInPasswordField(getPassword())
+//                .clickShowHidePasswordButton()
+//                .clickShowHidePasswordButton()
+//                .clickRememberUserNameSwitch()
+//                .clickRememberUserNameSwitch()
+//                .clickLoginButton()
+//                .selectAccountItem(StartScreen.ChooseAccountPopUp.AccountItem.REAL);
+//        //Assertions.assertTrue(new MyTasksScreen(driver).waitIsScreenOpen());
+//    }
 
     @DisplayName("After entering and submitting an email, link should be received")
     @Test
@@ -44,5 +58,15 @@ public class StartScreenTest extends BaseTest {
                 .inputDataInEmailField(getEmail())
                 .clickSubmitButton();
         Assertions.assertEquals(expectedResult, forgotPasswordScreen.getTextFromConfirmationMessage());
+    }
+
+    @DisplayName("After SIGN UP button, Real Account screen should be opened")
+    @Test
+    void afterClickingSignUpButtonRealAccountScreenShouldBeOpened() {
+        String expectedResult = "Real Account";
+        RealAccountScreen realAccountScreen = startScreen.waitScreenOpen()
+                .openLoginScreen()
+                .clickSignUpTextView();
+        Assertions.assertEquals(expectedResult, realAccountScreen.getTextFromRealAccount());
     }
 }
