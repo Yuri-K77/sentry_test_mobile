@@ -88,7 +88,7 @@ public class SentryConfig {
         return getInstance().configuration.getString("sentryUser.testEmail");
     }
 
-    public static String getPassword() {
+    public static String getTestPassword() {
         return getInstance().configuration.getString("sentryUser.testPassword");
     }
 

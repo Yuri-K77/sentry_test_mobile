@@ -31,21 +31,21 @@ public class StartScreenTest extends BaseTest {
         }, "Unexpectedly, Start screen does not open");
     }
 
-//    @DisplayName("After successful login, Marketwatch screen should be open")
-//    @Test
-//    void makeLogin() {
-//        startScreen.waitScreenOpen()
-//                .openLoginScreen()
-//                .inputDataInEmailField(getEmail())
-//                .inputDataInPasswordField(getPassword())
-//                .clickShowHidePasswordButton()
-//                .clickShowHidePasswordButton()
-//                .clickRememberUserNameSwitch()
-//                .clickRememberUserNameSwitch()
-//                .clickLoginButton()
-//                .selectAccountItem(StartScreen.ChooseAccountPopUp.AccountItem.REAL);
-//        //Assertions.assertTrue(new MyTasksScreen(driver).waitIsScreenOpen());
-//    }
+    @DisplayName("After successful login, Marketwatch screen should be open")
+    @Test
+    void makeLogin() {
+        startScreen.waitScreenOpen()
+                .openLoginScreen()
+                .inputDataInEmailField(getTestEmail())
+                .inputDataInPasswordField(getTestPassword())
+                .clickShowHidePasswordButton()
+                .clickShowHidePasswordButton()
+                .clickRememberUserNameSwitch()
+                .clickRememberUserNameSwitch()
+                .clickLoginButton()
+                .selectAccountItem(StartScreen.ChooseAccountPopUp.AccountItem.REAL);
+        //Assertions.assertTrue(new MyTasksScreen(driver).waitIsScreenOpen());
+    }
 
     @DisplayName("After entering and submitting an email, link should be received")
     @Test
@@ -59,7 +59,7 @@ public class StartScreenTest extends BaseTest {
         Assertions.assertEquals(expectedResult, forgotPasswordScreen.getTextFromConfirmationMessage());
     }
 
-    @DisplayName("After SIGN UP button, Real Account screen should be opened")
+    @DisplayName("After tapping SIGN UP button, Real Account screen should be opened")
     @Test
     void afterClickingSignUpButtonRealAccountScreenShouldBeOpened() {
         String expectedResult = "Real Account";
