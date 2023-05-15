@@ -2,13 +2,10 @@ package com.wimix.automation.ui.screens;
 
 import com.wimix.automation.ui.actions.MobileScreenActionManager;
 import io.appium.java_client.android.AndroidDriver;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.*;
 import org.awaitility.Awaitility;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.*;
+import org.openqa.selenium.support.*;
 
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
@@ -308,6 +305,9 @@ public class StartScreen extends AbstractScreen {
         @FindBy(xpath = "//*[@text='Real Account']")
         public WebElement realAccountTextView;
 
+        @FindBy(xpath = "//android.widget.ImageView[@content-desc='Go back']")
+        public WebElement closeButton;
+
         @Override
         public RealAccountScreen openScreen() {
             new StartScreen(driver)
@@ -335,6 +335,11 @@ public class StartScreen extends AbstractScreen {
 
         public String getTextFromRealAccount() {
             return driver.findElement(By.xpath("//*[@text='Real Account']")).getText();
+        }
+
+        public LoginScreen clickCloseButton() {
+            mobileScreenActionManager.clickOnElement(closeButton);
+            return new LoginScreen(driver);
         }
     }
 }

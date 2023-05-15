@@ -1,6 +1,7 @@
 package com.wimix.automation;
 
 import com.wimix.automation.core.utils.Retry;
+import com.wimix.automation.ui.screens.MarketWatchScreen;
 import com.wimix.automation.ui.screens.StartScreen;
 import com.wimix.automation.ui.screens.StartScreen.*;
 import lombok.SneakyThrows;
@@ -8,7 +9,6 @@ import org.junit.jupiter.api.*;
 
 import static com.wimix.automation.core.configuration.SentryConfig.*;
 
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class StartScreenTest extends BaseTest {
 
     private StartScreen startScreen;
@@ -31,9 +31,10 @@ public class StartScreenTest extends BaseTest {
         }, "Unexpectedly, Start screen does not open");
     }
 
-    @DisplayName("After successful login, Marketwatch screen should be open")
+    @DisplayName("Sign in - after successful login, Marketwatch screen should be open")
     @Test
     void makeLogin() {
+        MarketWatchScreen marketWatchScreen = new MarketWatchScreen(driver);
         startScreen.waitScreenOpen()
                 .openLoginScreen()
                 .inputDataInEmailField(getTestEmail())
@@ -44,10 +45,10 @@ public class StartScreenTest extends BaseTest {
                 .clickRememberUserNameSwitch()
                 .clickLoginButton()
                 .selectAccountItem(StartScreen.ChooseAccountPopUp.AccountItem.REAL);
-        //Assertions.assertTrue(new MyTasksScreen(driver).waitIsScreenOpen());
+        Assertions.assertTrue(marketWatchScreen.waitIsScreenOpen());
     }
 
-    @DisplayName("After entering and submitting an email, link should be received")
+    @DisplayName("Forgot password - after entering and submitting an email, link should be received")
     @Test
     void afterEnteringAndSubmittingAnEmailLinkShouldBeReceived() {
         String expectedResult = "Thank you. We have sent you an email with instructions for resetting your password.";
@@ -59,7 +60,7 @@ public class StartScreenTest extends BaseTest {
         Assertions.assertEquals(expectedResult, forgotPasswordScreen.getTextFromConfirmationMessage());
     }
 
-    @DisplayName("After tapping SIGN UP button, Real Account screen should be opened")
+    @DisplayName("Sign up - after tapping SIGN UP button, Real Account screen should be opened")
     @Test
     void afterClickingSignUpButtonRealAccountScreenShouldBeOpened() {
         String expectedResult = "Real Account";
@@ -67,5 +68,16 @@ public class StartScreenTest extends BaseTest {
                 .openLoginScreen()
                 .clickSignUpTextView();
         Assertions.assertEquals(expectedResult, realAccountScreen.getTextFromRealAccount());
+    }
+
+    @DisplayName("After tapping close button on the Real Account screen, Login screen should be opened")
+    @Test
+    void afterClickingCloseButtonLoginScreenShouldBeOpened() {
+        LoginScreen loginScreen = new LoginScreen(driver);
+        startScreen.waitScreenOpen()
+                .openLoginScreen()
+                .clickSignUpTextView()
+                .clickCloseButton();
+        Assertions.assertTrue(loginScreen.isScreenOpen());
     }
 }
