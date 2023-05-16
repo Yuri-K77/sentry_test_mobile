@@ -31,10 +31,10 @@ public class StartScreenTest extends BaseTest {
         }, "Unexpectedly, Start screen does not open");
     }
 
+    //TODO
     @DisplayName("Sign in - after successful login, Marketwatch screen should be open")
     @Test
     void makeLogin() {
-        MarketWatchScreen marketWatchScreen = new MarketWatchScreen(driver);
         startScreen.waitScreenOpen()
                 .openLoginScreen()
                 .inputDataInEmailField(getTestEmail())
@@ -45,9 +45,10 @@ public class StartScreenTest extends BaseTest {
                 .clickRememberUserNameSwitch()
                 .clickLoginButton()
                 .selectAccountItem(StartScreen.ChooseAccountPopUp.AccountItem.REAL);
-        Assertions.assertTrue(marketWatchScreen.waitIsScreenOpen());
+        Assertions.assertTrue(new MarketWatchScreen(driver).waitIsScreenOpen());
     }
 
+    //TODO - настроить проверку почты
     @DisplayName("Forgot password - after entering and submitting an email, link should be received")
     @Test
     void afterEnteringAndSubmittingAnEmailLinkShouldBeReceived() {

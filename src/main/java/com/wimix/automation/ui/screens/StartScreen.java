@@ -166,8 +166,8 @@ public class StartScreen extends AbstractScreen {
             AtomicReference<WebElement> element = new AtomicReference<>();
             Awaitility
                     .given()
-                    .pollInterval(100, TimeUnit.MILLISECONDS)
-                    .atMost(5000, TimeUnit.MILLISECONDS)
+                    .pollInterval(1000, TimeUnit.MILLISECONDS)
+                    .atMost(10000, TimeUnit.MILLISECONDS)
                     .pollInSameThread()
                     .ignoreExceptions()
                     .until(() -> {
@@ -279,6 +279,11 @@ public class StartScreen extends AbstractScreen {
 
     public static class DemoAccountScreen extends AbstractScreen {
 
+        public DemoAccountScreen(AndroidDriver driver) {
+            super(driver);
+            PageFactory.initElements(driver, this);
+        }
+
         @Override
         public AbstractScreen openScreen() {
             return null;
@@ -293,11 +298,6 @@ public class StartScreen extends AbstractScreen {
         public AbstractScreen waitScreenOpen() {
             return null;
         }
-
-        public DemoAccountScreen(AndroidDriver driver) {
-            super(driver);
-            PageFactory.initElements(driver, this);
-        }
     }
 
     public static class RealAccountScreen extends AbstractScreen {
@@ -308,12 +308,25 @@ public class StartScreen extends AbstractScreen {
         @FindBy(xpath = "//android.widget.ImageView[@content-desc='Go back']")
         public WebElement closeButton;
 
+        @FindBy(xpath = "//androidx.compose.ui.platform.ComposeView/android.view.View/android.widget.EditText[1]")
+        public WebElement emailField;
+
+        @FindBy(xpath = "//androidx.compose.ui.platform.ComposeView/android.view.View/android.widget.EditText[2]")
+        public WebElement passwordField;
+
+        @FindBy(xpath = "//*[@text='CREATE ACCOUNT']")
+        public WebElement createAccountButton;
+
+        public RealAccountScreen(AndroidDriver driver) {
+            super(driver);
+            PageFactory.initElements(driver, this);
+        }
+
         @Override
         public RealAccountScreen openScreen() {
             new StartScreen(driver)
                     .openScreen()
-                    .openLoginScreen()
-                    .clickSignUpTextView();
+                    .openRealAccountScreen();
             return waitScreenOpen();
         }
 
@@ -328,11 +341,6 @@ public class StartScreen extends AbstractScreen {
             return this;
         }
 
-        public RealAccountScreen(AndroidDriver driver) {
-            super(driver);
-            PageFactory.initElements(driver, this);
-        }
-
         public String getTextFromRealAccount() {
             return driver.findElement(By.xpath("//*[@text='Real Account']")).getText();
         }
@@ -340,6 +348,52 @@ public class StartScreen extends AbstractScreen {
         public LoginScreen clickCloseButton() {
             mobileScreenActionManager.clickOnElement(closeButton);
             return new LoginScreen(driver);
+        }
+
+        public RealAccountScreen inputDataInEmailField(String text) {
+            mobileScreenActionManager.inputDataInField(emailField, text);
+            return this;
+        }
+
+        public RealAccountScreen inputDataInPasswordField(String text) {
+            mobileScreenActionManager.inputDataInField(passwordField, text);
+            return this;
+        }
+
+        public SignUpForFreeScreen clickCreateAccountButton() {
+            mobileScreenActionManager.clickOnElement(createAccountButton);
+            return new SignUpForFreeScreen(driver);
+        }
+    }
+
+    public static class SignUpForFreeScreen extends AbstractScreen {
+
+        @FindBy(id = "question-1_251")
+        public WebElement signUpForFreeTextView;
+
+        public SignUpForFreeScreen(AndroidDriver driver) {
+            super(driver);
+            PageFactory.initElements(driver, this);
+        }
+
+        @Override
+        public SignUpForFreeScreen openScreen() {
+            new StartScreen(driver)
+                    .openScreen()
+                    .openRealAccountScreen()
+                    .clickCreateAccountButton();
+            return waitScreenOpen();
+        }
+
+        @Override
+        public boolean isScreenOpen() {
+            return mobileScreenActionManager.isElementDisplayed(signUpForFreeTextView);
+        }
+
+        @Override
+        public SignUpForFreeScreen waitScreenOpen() {
+            mobileScreenActionManager.waitGetVisibleElement(signUpForFreeTextView);
+            return this;
         }
     }
 }
