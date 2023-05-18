@@ -369,7 +369,18 @@ public class StartScreen extends AbstractScreen {
     public static class SignUpForFreeScreen extends AbstractScreen {
 
         @FindBy(id = "question-1_251")
-        public WebElement signUpForFreeTextView;
+        public WebElement signUpForFreeView;
+
+        //@FindBy(id = "question-4_247")
+        @FindBy(xpath = "//androidx.compose.ui.platform.ComposeView/android.view.View/android.view.ViewGroup/android.widget.FrameLayout/android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View[1]/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View[2]/android.view.View/android.view.View/android.view.View[2]/android.view.View/android.view.View[1]/android.view.View/android.widget.EditText")
+        public WebElement firstNameField;
+
+        //@FindBy(id = "question-5_248")
+        @FindBy(xpath = "//androidx.compose.ui.platform.ComposeView/android.view.View/android.view.ViewGroup/android.widget.FrameLayout/android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View[1]/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View[2]/android.view.View/android.view.View/android.view.View[3]/android.view.View/android.view.View[1]/android.view.View/android.widget.EditText")
+        public WebElement lastNameField;
+
+        @FindBy(xpath = "//*[@text='Next']")
+        public WebElement nextButton;
 
         public SignUpForFreeScreen(AndroidDriver driver) {
             super(driver);
@@ -387,12 +398,59 @@ public class StartScreen extends AbstractScreen {
 
         @Override
         public boolean isScreenOpen() {
-            return mobileScreenActionManager.isElementDisplayed(signUpForFreeTextView);
+            return mobileScreenActionManager.isElementDisplayed(signUpForFreeView);
         }
 
         @Override
         public SignUpForFreeScreen waitScreenOpen() {
-            mobileScreenActionManager.waitGetVisibleElement(signUpForFreeTextView);
+            mobileScreenActionManager.waitGetVisibleElement(signUpForFreeView);
+            return this;
+        }
+
+        public SignUpForFreeScreen inputDataInFirstNameField(String text) {
+            mobileScreenActionManager.inputDataInField(firstNameField, text);
+            return this;
+        }
+
+        public SignUpForFreeScreen inputDataInLastNameField(String text) {
+            mobileScreenActionManager.inputDataInField(lastNameField, text);
+            return this;
+        }
+
+        public DateOfBirthScreen clickNextButton() {
+            mobileScreenActionManager.clickOnElement(nextButton);
+            return new DateOfBirthScreen(driver);
+        }
+    }
+
+    public static class DateOfBirthScreen extends AbstractScreen {
+
+        @FindBy(id = "question-1_252")
+        public WebElement dateOfBirthView;
+
+        public DateOfBirthScreen(AndroidDriver driver) {
+            super(driver);
+            PageFactory.initElements(driver, this);
+        }
+
+        @Override
+        public DateOfBirthScreen openScreen() {
+            new StartScreen(driver)
+                    .openScreen()
+                    .openRealAccountScreen()
+                    .clickCreateAccountButton()
+                    .clickNextButton();
+            return waitScreenOpen();
+        }
+
+        @Override
+        public boolean isScreenOpen() {
+            return mobileScreenActionManager.isElementDisplayed(dateOfBirthView);
+        }
+
+        @Override
+        public DateOfBirthScreen waitScreenOpen() {
+            mobileScreenActionManager.waitGetVisibleElement(dateOfBirthView);
             return this;
         }
     }

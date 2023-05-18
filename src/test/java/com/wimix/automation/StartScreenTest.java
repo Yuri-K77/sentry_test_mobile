@@ -18,18 +18,18 @@ public class StartScreenTest extends BaseTest {
         startScreen = new StartScreen(driver).openScreen();
     }
 
-    @SneakyThrows
-    @AfterEach
-    void afterEach() {
-        Retry.whileTrue(100, 5000, () -> {
-            if (!startScreen.isScreenOpen()) {
-                driver.navigate().back();
-                return true;
-            } else {
-                return false;
-            }
-        }, "Unexpectedly, Start screen does not open");
-    }
+//    @SneakyThrows
+//    @AfterEach
+//    void afterEach() {
+//        Retry.whileTrue(100, 5000, () -> {
+//            if (!startScreen.isScreenOpen()) {
+//                driver.navigate().back();
+//                return true;
+//            } else {
+//                return false;
+//            }
+//        }, "Unexpectedly, Start screen does not open");
+//    }
 
     //TODO
     @DisplayName("Sign in - after successful login, Marketwatch screen should be open")
@@ -74,11 +74,10 @@ public class StartScreenTest extends BaseTest {
     @DisplayName("After tapping close button on the Real Account screen, Login screen should be opened")
     @Test
     void afterClickingCloseButtonLoginScreenShouldBeOpened() {
-        LoginScreen loginScreen = new LoginScreen(driver);
         startScreen.waitScreenOpen()
                 .openLoginScreen()
                 .clickSignUpTextView()
                 .clickCloseButton();
-        Assertions.assertTrue(loginScreen.isScreenOpen());
+        Assertions.assertTrue(new LoginScreen(driver).waitIsScreenOpen());
     }
 }

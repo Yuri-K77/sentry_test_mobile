@@ -13,6 +13,8 @@ public class RealRegistrationTest extends BaseTest {
     private StartScreen.RealAccountScreen realAccountScreen;
     private final String email = DataGenerator.generateRandomEmail();
     private final String password = "Password" + DataGenerator.randomString(5);
+    private final String firstName = "Fn" + DataGenerator.randomString(3);
+    private final String lastName = "Ln" + DataGenerator.randomString(3);
 
     @BeforeAll
     void beforeAll() {
@@ -28,7 +30,10 @@ public class RealRegistrationTest extends BaseTest {
                 .inputDataInEmailField(email)
                 .inputDataInPasswordField(password)
                 .clickCreateAccountButton()
-                .waitScreenOpen();
+                .inputDataInFirstNameField(firstName)
+                .inputDataInLastNameField(lastName)
+                .clickNextButton()
+                .waitIsScreenOpen();
         //Assertions.assertTrue(new MarketWatchScreen(driver).waitIsScreenOpen());
     }
 }
