@@ -12,9 +12,9 @@ public class RealRegistrationTest extends BaseTest {
 
     private StartScreen.RealAccountScreen realAccountScreen;
     private final String email = DataGenerator.generateRandomEmail();
-    private final String password = "Password" + DataGenerator.randomString(5);
-    private final String firstName = "Fn" + DataGenerator.randomString(3);
-    private final String lastName = "Ln" + DataGenerator.randomString(3);
+    private final String password = "Password" + DataGenerator.randomString(6);
+    private final String firstName = "Fn" + DataGenerator.randomString(6);
+    private final String lastName = "Ln" + DataGenerator.randomString(6);
 
     @BeforeAll
     void beforeAll() {
