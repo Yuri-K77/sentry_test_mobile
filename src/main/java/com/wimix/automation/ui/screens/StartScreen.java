@@ -368,15 +368,13 @@ public class StartScreen extends AbstractScreen {
 
     public static class SignUpForFreeScreen extends AbstractScreen {
 
-        @FindBy(id = "question-1_251")
+        @FindBy(xpath = "//*[@text='Sign-Up for Free!']")
         public WebElement signUpForFreeView;
 
-        //@FindBy(id = "question-4_247")
-        @FindBy(xpath = "//androidx.compose.ui.platform.ComposeView/android.view.View/android.view.ViewGroup/android.widget.FrameLayout/android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View[1]/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View[2]/android.view.View/android.view.View/android.view.View[2]/android.view.View/android.view.View[1]/android.view.View/android.widget.EditText")
+        @FindBy(xpath = "//*[@resource-id='question-4_247' and @class='android.widget.EditText']")
         public WebElement firstNameField;
 
-        //@FindBy(id = "question-5_248")
-        @FindBy(xpath = "//androidx.compose.ui.platform.ComposeView/android.view.View/android.view.ViewGroup/android.widget.FrameLayout/android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View[1]/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View[2]/android.view.View/android.view.View/android.view.View[3]/android.view.View/android.view.View[1]/android.view.View/android.widget.EditText")
+        @FindBy(xpath = "//*[@resource-id='question-5_248' and @class='android.widget.EditText']")
         public WebElement lastNameField;
 
         @FindBy(xpath = "//*[@text='Next']")
@@ -425,7 +423,7 @@ public class StartScreen extends AbstractScreen {
 
     public static class DateOfBirthScreen extends AbstractScreen {
 
-        @FindBy(id = "question-1_252")
+        @FindBy(xpath = "//*[@text='Date of Birth']")
         public WebElement dateOfBirthView;
 
         public DateOfBirthScreen(AndroidDriver driver) {
