@@ -31,7 +31,6 @@ public class StartScreenTest extends BaseTest {
 //        }, "Unexpectedly, Start screen does not open");
 //    }
 
-    //TODO
     @DisplayName("Sign in - after successful login, Marketwatch screen should be open")
     @Test
     void makeLogin() {

@@ -161,7 +161,6 @@ public class StartScreen extends AbstractScreen {
             return new LoginScreen(mobileScreenActionManager.driver);
         }
 
-        //TODO
         private WebElement getAccountItem(AccountItem accountItem) {
             AtomicReference<WebElement> element = new AtomicReference<>();
             Awaitility
@@ -175,10 +174,10 @@ public class StartScreen extends AbstractScreen {
                         element.set(chooseAccountPopUp.getContainer());
                         switch (accountItem) {
                             case REAL -> {
-                                chooseAccountPopUp.findElement(xpath("//*[text()='REAL']"));
+                                chooseAccountPopUp.findElement(xpath("//*[@text='REAL']"));
                             }
                             case DEMO -> {
-                                chooseAccountPopUp.findElement(xpath("//*[text()='DEMO']"));
+                                chooseAccountPopUp.findElement(xpath("//*[@text='DEMO']"));
                             }
                             default -> throw new IllegalArgumentException("This item doesn't exist");
                         }
@@ -426,6 +425,12 @@ public class StartScreen extends AbstractScreen {
         @FindBy(xpath = "//*[@text='Date of Birth']")
         public WebElement dateOfBirthView;
 
+        @FindBy(xpath = "//*[@resource-id='native-datepicker' and @class='android.widget.Spinner']")
+        public WebElement datePicker;
+
+        @FindBy(xpath = "//*[@text='Next']")
+        public WebElement nextButton;
+
         public DateOfBirthScreen(AndroidDriver driver) {
             super(driver);
             PageFactory.initElements(driver, this);
@@ -449,6 +454,81 @@ public class StartScreen extends AbstractScreen {
         @Override
         public DateOfBirthScreen waitScreenOpen() {
             mobileScreenActionManager.waitGetVisibleElement(dateOfBirthView);
+            return this;
+        }
+
+        public DatePicker clickOpenCalendar() {
+            mobileScreenActionManager.clickOnElement(datePicker);
+            return new DatePicker(driver, mobileScreenActionManager);
+        }
+
+        public DateOfBirthScreen getSetButton() {
+            mobileScreenActionManager.clickOnElement(driver.findElement(By.xpath("//*[@resource-id='android:id/button1' and @text='SET']")));
+            return new DateOfBirthScreen(mobileScreenActionManager.driver);
+        }
+
+        public RegisteredAddressScreen clickNextButton() {
+            mobileScreenActionManager.clickOnElement(nextButton);
+            return new RegisteredAddressScreen(driver);
+        }
+    }
+
+    public static class DatePicker extends AbstractElement {
+
+        public DatePicker(AndroidDriver driver, MobileScreenActionManager mobileScreenActionManager) {
+            super(driver.findElement(By.xpath("//*[@resource-id='android:id/content']")), mobileScreenActionManager);
+        }
+
+        public DateOfBirthScreen clickSetButton() {
+            AtomicReference<DateOfBirthScreen> dateOfBirthScreenAtomicReference = new AtomicReference<>();
+            Awaitility
+                    .given()
+                    .pollInterval(1000, TimeUnit.MILLISECONDS)
+                    .atMost(10000, TimeUnit.MILLISECONDS)
+                    .pollInSameThread()
+                    .ignoreExceptions()
+                    .until(() -> {
+                        DateOfBirthScreen dateOfBirthScreen = new DateOfBirthScreen(mobileScreenActionManager.driver);
+                        dateOfBirthScreenAtomicReference.set(dateOfBirthScreen);
+                        dateOfBirthScreen.getSetButton();
+                        return true;
+                    });
+            return dateOfBirthScreenAtomicReference.get();
+        }
+    }
+
+    public static class RegisteredAddressScreen extends AbstractScreen {
+
+        @FindBy(xpath = "//*[@text='Registered Address']")
+        public WebElement registeredAddressView;
+
+        @FindBy(xpath = "//*[@text='Next']")
+        public WebElement nextButton;
+
+        public RegisteredAddressScreen(AndroidDriver driver) {
+            super(driver);
+            PageFactory.initElements(driver, this);
+        }
+
+        @Override
+        public RegisteredAddressScreen openScreen() {
+            new StartScreen(driver)
+                    .openScreen()
+                    .openRealAccountScreen()
+                    .clickCreateAccountButton()
+                    .clickNextButton()
+                    .clickNextButton();
+            return waitScreenOpen();
+        }
+
+        @Override
+        public boolean isScreenOpen() {
+            return mobileScreenActionManager.isElementDisplayed(registeredAddressView);
+        }
+
+        @Override
+        public RegisteredAddressScreen waitScreenOpen() {
+            mobileScreenActionManager.waitGetVisibleElement(registeredAddressView);
             return this;
         }
     }

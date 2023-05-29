@@ -1,9 +1,7 @@
 package com.wimix.automation;
 
 import com.wimix.automation.core.utils.DataGenerator;
-import com.wimix.automation.ui.screens.MarketWatchScreen;
 import com.wimix.automation.ui.screens.StartScreen;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -32,6 +30,9 @@ public class RealRegistrationTest extends BaseTest {
                 .clickCreateAccountButton()
                 .inputDataInFirstNameField(firstName)
                 .inputDataInLastNameField(lastName)
+                .clickNextButton()
+                .clickOpenCalendar()
+                .clickSetButton()
                 .clickNextButton()
                 .waitIsScreenOpen();
         //Assertions.assertTrue(new MarketWatchScreen(driver).waitIsScreenOpen());
