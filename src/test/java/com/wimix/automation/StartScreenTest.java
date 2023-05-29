@@ -1,6 +1,7 @@
 package com.wimix.automation;
 
 import com.wimix.automation.core.utils.Retry;
+import com.wimix.automation.ui.actions.MobileScreenActionManager;
 import com.wimix.automation.ui.screens.MarketWatchScreen;
 import com.wimix.automation.ui.screens.StartScreen;
 import com.wimix.automation.ui.screens.StartScreen.*;
@@ -31,6 +32,7 @@ public class StartScreenTest extends BaseTest {
 //        }, "Unexpectedly, Start screen does not open");
 //    }
 
+    //TODO
     @DisplayName("Sign in - after successful login, Marketwatch screen should be open")
     @Test
     void makeLogin() {
@@ -44,7 +46,7 @@ public class StartScreenTest extends BaseTest {
                 .clickRememberUserNameSwitch()
                 .clickLoginButton()
                 .selectAccountItem(StartScreen.ChooseAccountPopUp.AccountItem.REAL);
-        Assertions.assertTrue(new MarketWatchScreen(driver).waitIsScreenOpen());
+        Assertions.assertTrue(new MarketWatchScreen.TutorialPopUp(driver, new MobileScreenActionManager(driver)).waitIsPopUpOpen());
     }
 
     //TODO - настроить проверку почты
