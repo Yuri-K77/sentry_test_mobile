@@ -149,7 +149,7 @@ public class StartScreen extends AbstractScreen {
     public static class ChooseAccountPopUp extends AbstractElement {
 
         public ChooseAccountPopUp(AndroidDriver driver, MobileScreenActionManager mobileScreenActionManager) {
-            super(driver.findElement(By.xpath("//*[@resource-id='android:id/content']")), mobileScreenActionManager);
+            super(driver.findElement(By.xpath("//*[@resource-id='android:id/content' and @class='android.widget.FrameLayout']")), mobileScreenActionManager);
         }
 
         public boolean isChooseAccountPopUpOpen() {
@@ -174,10 +174,10 @@ public class StartScreen extends AbstractScreen {
                         element.set(chooseAccountPopUp.getContainer());
                         switch (accountItem) {
                             case REAL -> {
-                                chooseAccountPopUp.findElement(xpath("//*[@text='REAL']"));
+                                chooseAccountPopUp.getContainer().findElement(xpath("//*[@text='REAL']"));
                             }
                             case DEMO -> {
-                                chooseAccountPopUp.findElement(xpath("//*[@text='DEMO']"));
+                                chooseAccountPopUp.getContainer().findElement(xpath("//*[@text='DEMO']"));
                             }
                             default -> throw new IllegalArgumentException("This item doesn't exist");
                         }
