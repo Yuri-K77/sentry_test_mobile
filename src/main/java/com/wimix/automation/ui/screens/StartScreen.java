@@ -15,13 +15,13 @@ import static org.openqa.selenium.By.xpath;
 @SuppressWarnings("UnusedReturnValue")
 public class StartScreen extends AbstractScreen {
 
-    @FindBy(xpath = "//*[@text='ALREADY HAVE AN ACCOUNT? LOG IN']")
+    @FindBy(xpath = "//*[@content-desc='ALREADY HAVE AN ACCOUNT? LOG IN']")
     public WebElement alreadyHaveAnAccountTextView;
 
-    @FindBy(xpath = "//*[@text='FREE DEMO']")
+    @FindBy(xpath = "//*[@content-desc='FREE DEMO']")
     public WebElement freeDemoButton;
 
-    @FindBy(xpath = "//*[@text='OPEN ACCOUNT']")
+    @FindBy(xpath = "//*[@content-desc='OPEN ACCOUNT']")
     public WebElement openAccountButton;
 
     public StartScreen(AndroidDriver driver) {
@@ -62,28 +62,28 @@ public class StartScreen extends AbstractScreen {
 
     public static class LoginScreen extends AbstractScreen {
 
-        @FindBy(xpath = "//*[@text='WELCOME!']")
+        @FindBy(xpath = "//*[@content-desc='WELCOME!']")
         public WebElement welcomeTextView;
 
-        @FindBy(xpath = "//androidx.compose.ui.platform.ComposeView/android.view.View/android.widget.EditText[1]")
+        @FindBy(xpath = "/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View[4]/android.widget.EditText[1]")
         public WebElement emailField;
 
-        @FindBy(xpath = "//androidx.compose.ui.platform.ComposeView/android.view.View/android.widget.EditText[2]")
+        @FindBy(xpath = "/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View[4]/android.widget.EditText[2]")
         public WebElement passwordField;
 
-        @FindBy(xpath = "//android.widget.ImageView[@content-desc='Show/Hide password']")
+        @FindBy(xpath = "//*[@content-desc='Guide']")
         public WebElement showHidePassword;
 
-        @FindBy(xpath = "//androidx.compose.ui.platform.ComposeView/android.view.View/android.view.ViewGroup[2]/android.widget.Switch")
+        @FindBy(xpath = "/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View[4]/android.view.View[3]")
         public WebElement rememberUserNameSwitch;
 
-        @FindBy(xpath = "//*[@text='LOG IN']")
+        @FindBy(xpath = "//*[@content-desc='LOG IN']")
         public WebElement loginButton;
 
-        @FindBy(xpath = "//*[@text='FORGOT PASSWORD?']")
+        @FindBy(xpath = "//*[@content-desc='FORGOT PASSWORD?']")
         public WebElement forgotPasswordTextView;
 
-        @FindBy(xpath = "//*[@text='SIGN UP']")
+        @FindBy(xpath = "//*[@content-desc='SIGN UP']")
         public WebElement signUpTextView;
 
         public LoginScreen(AndroidDriver driver) {

@@ -65,6 +65,7 @@ public class MobileScreenActionManager {
         SentryAndroidDriverProvider.getAndroidDriver().hideKeyboard();
         element.clear();
         element.sendKeys(text);
+        SentryAndroidDriverProvider.getAndroidDriver().hideKeyboard();
     }
 
     public boolean isElementDisplayed(WebElement element) {
