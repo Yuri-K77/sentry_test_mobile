@@ -215,10 +215,10 @@ public class StartScreen extends AbstractScreen {
         @FindBy(xpath = "//*[@text='Return to Login']")
         public WebElement returnToLoginButton;
 
-        @FindBy(xpath = "//android.widget.ImageView[@content-desc='Go back']")
+        @FindBy(xpath = "//*[@text='Cancel']")
         public WebElement cancelButton;
 
-        @FindBy(xpath = "//androidx.compose.ui.platform.ComposeView/android.view.View/android.view.ViewGroup[2]/android.widget.FrameLayout/android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View[2]/android.view.View[2]/android.view.View/android.view.View[1]/android.view.View/android.view.View/android.view.View/android.widget.EditText")
+        @FindBy(xpath = "/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View[2]/android.view.ViewGroup/android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View[3]/android.view.View[1]/android.view.View/android.view.View/android.view.View/android.widget.EditText")
         public WebElement emailField;
 
         public ForgotPasswordScreen(AndroidDriver driver) {
